@@ -11,5 +11,5 @@ public class TestCollision : MonoBehaviour
         {
             Debug.Log("Cube Detected");
         }
-    }2
+    }
 }
