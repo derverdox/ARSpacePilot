@@ -1442,6 +1442,13 @@ MonoBehaviour:
   - {fileID: 1499609197}
   - {fileID: 1155890457}
   - {fileID: 195138664}
+  experimentalDistances:
+  - 1.3
+  - 1.3
+  - 1.1
+  - 0.6
+  - 0.3
+  dimensional_factor: 100
 --- !u!1 &1155890457
 GameObject:
   m_ObjectHideFlags: 0
