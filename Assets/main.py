@@ -5,7 +5,7 @@ import socket
 #Parameters
 width, height = 1280, 720
 
-device_index = 0  # 0 is your standard cam, for external webcam change to 1
+device_index = 2  # 0 is your standard cam, for external webcam change to 1
 cap = cv2.VideoCapture(device_index)
 cap.set(3, width)
 cap.set(4, height)

@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class HandTracking : MonoBehaviour
 {
+    public Camera trackerCam;
     public UDPReceive udpReceive;
     public GameObject[] handPoints;
+    public Vector3 offset;
 
     //insert the experimental distances for the hardware setup
     public float[] experimentalDistances;
@@ -20,6 +22,9 @@ public class HandTracking : MonoBehaviour
     //bool array if gesture is active
     bool[] gesture_dection = new bool[5];
 
+    public int width;
+    public int height;
+
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +36,10 @@ public class HandTracking : MonoBehaviour
     void Update()
     {
         string data = udpReceive.data;
+        if (data.Length == 0)
+        {
+            return;
+        }
 
         data = data.Remove(0, 1);
         data = data.Remove(data.Length - 1, 1);
@@ -45,7 +54,22 @@ public class HandTracking : MonoBehaviour
             float y = float.Parse(points[i * 3 + 1]) / dimensional_factor;
             float z = float.Parse(points[i * 3 + 2]) / dimensional_factor;
 
-            handPoints[i].transform.localPosition = new Vector3(x, y, z);
+
+            if (trackerCam)
+            {
+                float xScaled = (x * dimensional_factor / width);
+                float yScaled = (y * dimensional_factor / height);
+                
+                var newWorldPos = Camera.main.ViewportToWorldPoint(new Vector3(xScaled, yScaled, 0));
+                newWorldPos.z = 0;
+                newWorldPos.y += 1;
+                handPoints[i].transform.position = newWorldPos;
+            }
+            else
+            {
+                handPoints[i].transform.localPosition = new Vector3(x, y, z);
+            }
+            
             trackpoints[i] = new Vector3(x, y, z);
         }
 
@@ -56,15 +80,15 @@ public class HandTracking : MonoBehaviour
         point_dist[3] = Vector3.Distance(trackpoints[16], trackpoints[13]); //ring finger 
         point_dist[4] = Vector3.Distance(trackpoints[20], trackpoints[17]); //pinky  
 
-        Debug.Log($"Distance 1: {point_dist[0]}");
+        /*Debug.Log($"Distance 1: {point_dist[0]}");
         Debug.Log($"Distance 2: {point_dist[1]}");
         Debug.Log($"Distance 3: {point_dist[2]}");
         Debug.Log($"Distance 4: {point_dist[3]}");
-        Debug.Log($"Distance 5: {point_dist[4]}");
+        Debug.Log($"Distance 5: {point_dist[4]}");*/
 
 
         //the following problem occurs here, thus we only use one camera there is no depth info (that is reliable), thus the distance from tip to root of the hand 
-        // changes depending on the distance of the hand to the camera (m´smaller when further away) The following data is done at 23 cm distance to cam
+        // changes depending on the distance of the hand to the camera (mï¿½smaller when further away) The following data is done at 23 cm distance to cam
         //Therefore we have to specif certian experimental values 
 
         bool[] gesture_dection = new bool[5];
@@ -74,6 +98,11 @@ public class HandTracking : MonoBehaviour
         gesture_dection[2] = (point_dist[2] < experimentalDistances[2]);
         gesture_dection[3] = (point_dist[3] < experimentalDistances[3]);
         gesture_dection[4] = (point_dist[4] < experimentalDistances[4]);
+
+        if (gesture_dection[0])
+        {
+            Debug.Log("Thumb Detection");
+        }
 
 
     }
