@@ -5,7 +5,7 @@ import socket
 #Parameters
 width, height = 1280, 720
 
-device_index = 2  # 0 is your standard cam, for external webcam change to 1
+device_index = 3  # 0 is your standard cam, for external webcam change to 1
 cap = cv2.VideoCapture(device_index)
 cap.set(3, width)
 cap.set(4, height)
@@ -30,11 +30,11 @@ while True:
         hand = hands[0]
         # Get the landmark list
         lmList = hand['lmList']
-        print(lmList)
+        # print(lmList)
 
         for lm in lmList:
             data.extend([lm[0], height - lm[1], lm[2]])
-        print(data)
+        # print(data)
         # send data via udp
         sock.sendto(str.encode(str(data)), serverAddressPort)
 
