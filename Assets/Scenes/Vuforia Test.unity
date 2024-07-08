@@ -537,6 +537,7 @@ GameObject:
   - component: {fileID: 1708582797}
   - component: {fileID: 1708582796}
   - component: {fileID: 1708582795}
+  - component: {fileID: 1708582799}
   m_Layer: 0
   m_Name: ARCamera
   m_TagString: MainCamera
@@ -636,6 +637,26 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &1708582799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1708582793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f1106d3744ef824496276c8274506b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CaptureDevice: 0
+  ResizeMode: 0
+  Timeout: 1000
+  MirrorMode: 0
+  DoubleBuffering: 0
+  EnableVSync: 0
+  TargetFrameRate: 60
+  HideWarnings: 0
 --- !u!1 &2071492081
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LooseMenu.unity
     guid: 8103078005081e24a9d46746db19ec17
+  - enabled: 1
+    path: Assets/Scenes/Level 1 AR.unity
+    guid: e7c2a5c9b5b86b440b7e00ad57bce0a2
   m_configObjects: {}
