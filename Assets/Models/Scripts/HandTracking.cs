@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class HandTracking : MonoBehaviour
@@ -8,6 +5,10 @@ public class HandTracking : MonoBehaviour
     public Camera trackerCam;
     public Camera arCam;
     public GameObject gameProjection;
+    public Fire fire;
+    public PlayerAttachToARHand playerAttachToARHand;
+
+    public float shootCooldown = 0.5f;
 
     public UDPReceive udpReceive;
     public GameObject[] handPoints;
@@ -16,6 +17,11 @@ public class HandTracking : MonoBehaviour
     [Range(-1,1)]
     public float YOffset = 0f;
 
+    private bool isShooting;
+    private bool isSteering;
+
+    private double lastTimeShoot;
+    
     //insert the experimental distances for the hardware setup
     public float[] experimentalDistances;
 
@@ -61,9 +67,9 @@ public class HandTracking : MonoBehaviour
         var minGameViewCoord = arCam.WorldToViewportPoint(minGameWorld);
         var maxGameViewCoord = arCam.WorldToViewportPoint(maxGameWorld);
         
-        Debug.Log("Min: "+minGameViewCoord+" | Max: "+maxGameViewCoord);
+        //Debug.Log("Min: "+minGameViewCoord+" | Max: "+maxGameViewCoord);
 
-        for (int i = 0; i < 21; i++)
+        for (int i = 0; i < handPoints.Length; i++)
         {
             float x = float.Parse(points[i * 3]) / dimensional_factor; //decide on a suitable factor 
             float y = float.Parse(points[i * 3 + 1]) / dimensional_factor;
@@ -79,9 +85,11 @@ public class HandTracking : MonoBehaviour
                 yScaled += YOffset;
                 if (i == 12)
                 {
-                    Debug.Log("x: "+xScaled+" | y: "+yScaled);
-                    Debug.Log("");
+                    /*Debug.Log("x: "+xScaled+" | y: "+yScaled);
+                    Debug.Log("");*/
                 }
+
+                var isPlayerTrackingPoint = playerAttachToARHand.handTrackingPoint.GetInstanceID().Equals(handPoints[i].GetInstanceID());
 
                 if (xScaled >= minGameViewCoord.x
                     && xScaled <= maxGameViewCoord.x
@@ -89,14 +97,19 @@ public class HandTracking : MonoBehaviour
                     && yScaled <= maxGameViewCoord.y
                    )
                 {
-                    Debug.Log("Innerhalb des Spiels");
-
                     var ingameX = 1 - (xScaled - minGameViewCoord.x) / (maxGameViewCoord.x - minGameViewCoord.x);
                     var ingameY = 1 -(yScaled - minGameViewCoord.y) / (maxGameViewCoord.y - minGameViewCoord.y);
                     
                     
                     var newWorldPos = trackerCam.ViewportToWorldPoint(new Vector3(ingameX, ingameY, trackerCam.nearClipPlane + 1));
                     handPoints[i].transform.position = newWorldPos;
+                    if (isPlayerTrackingPoint)
+                        isSteering = true;
+                }
+                else
+                {
+                    if (isPlayerTrackingPoint)
+                        isSteering = false;
                 }
 
 
@@ -128,8 +141,9 @@ public class HandTracking : MonoBehaviour
         point_dist[3] = Vector3.Distance(trackpoints[16], trackpoints[13]); //ring finger 
         point_dist[4] = Vector3.Distance(trackpoints[20], trackpoints[17]); //pinky  
 
-        /*Debug.Log($"Distance 1: {point_dist[0]}");
-        Debug.Log($"Distance 2: {point_dist[1]}");
+        Debug.Log($"Distance 1: {point_dist[0]}");
+ 
+        /*Debug.Log($"Distance 2: {point_dist[1]}");
         Debug.Log($"Distance 3: {point_dist[2]}");
         Debug.Log($"Distance 4: {point_dist[3]}");
         Debug.Log($"Distance 5: {point_dist[4]}");*/
@@ -147,9 +161,16 @@ public class HandTracking : MonoBehaviour
         gesture_dection[3] = (point_dist[3] < experimentalDistances[3]);
         gesture_dection[4] = (point_dist[4] < experimentalDistances[4]);
 
-        if (gesture_dection[0])
+        if (gesture_dection[0] && Time.timeAsDouble - lastTimeShoot > shootCooldown)
         {
-            //Debug.Log("Thumb Detection");
+            isShooting = true;
+            fire.shoot();
+            lastTimeShoot = Time.timeAsDouble;
         }
+        else
+        {
+            isShooting = false;
+        }
+        
     }
 }

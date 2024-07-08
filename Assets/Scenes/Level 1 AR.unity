@@ -588,6 +588,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8254508694056509577, guid: 86c84de378514aa458a8f83307622f47,
         type: 3}
+      propertyPath: fire
+      value: 
+      objectReference: {fileID: 2129695202}
+    - target: {fileID: 8254508694056509577, guid: 86c84de378514aa458a8f83307622f47,
+        type: 3}
       propertyPath: arCam
       value: 
       objectReference: {fileID: 1367744714}
@@ -626,6 +631,11 @@ PrefabInstance:
       propertyPath: gameProjection
       value: 
       objectReference: {fileID: 1502072595}
+    - target: {fileID: 8254508694056509577, guid: 86c84de378514aa458a8f83307622f47,
+        type: 3}
+      propertyPath: playerAttachToARHand
+      value: 
+      objectReference: {fileID: 2129695200}
     - target: {fileID: 8254508694056509577, guid: 86c84de378514aa458a8f83307622f47,
         type: 3}
       propertyPath: handPoints.Array.size
@@ -736,6 +746,11 @@ PrefabInstance:
       propertyPath: handPoints.Array.data[20]
       value: 
       objectReference: {fileID: 10105396}
+    - target: {fileID: 8254508694056509577, guid: 86c84de378514aa458a8f83307622f47,
+        type: 3}
+      propertyPath: experimentalDistances.Array.data[0]
+      value: 1.24
+      objectReference: {fileID: 0}
     - target: {fileID: 8254508694056509578, guid: 86c84de378514aa458a8f83307622f47,
         type: 3}
       propertyPath: printToConsole
@@ -1509,7 +1524,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eca00244b8ad6ec4aa264b9ebae9d346, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handTrackingPoint: {fileID: 874101032}
+  handTrackingPoint: {fileID: 2012356518}
+--- !u!114 &2129695202 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8993450959135340527, guid: 09f9b34fa85f28c4abeb07c6500d8360,
+    type: 3}
+  m_PrefabInstance: {fileID: 8993450958584112696}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2129695192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71b4bf1eab751c04eaaebad0714d9be6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8993450958584112696
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1721,16 +1748,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 8993450958119142631, guid: 09f9b34fa85f28c4abeb07c6500d8360,
-        type: 3}
-      propertyPath: playerHealth
-      value: 151.57
-      objectReference: {fileID: 0}
-    - target: {fileID: 8993450958119142631, guid: 09f9b34fa85f28c4abeb07c6500d8360,
-        type: 3}
-      propertyPath: playerMaxHealth
-      value: 264.47
       objectReference: {fileID: 0}
     - target: {fileID: 8993450958264173799, guid: 09f9b34fa85f28c4abeb07c6500d8360,
         type: 3}
